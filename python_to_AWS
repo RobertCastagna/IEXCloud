@@ -1,0 +1,69 @@
+import pandas as pd
+import os
+import numpy as np
+import psycopg2
+
+# import csv to df
+df = pd.read_csv("sp500_companies.csv")
+
+# clean table headers
+file = "sp500_companies"
+clean_tbl_name = file.lower().replace(" ", "_").replace("?", "")\
+    .replace(r"/", "_")
+
+# clean column headers
+df.columns = [x.lower().replace(" ", "_").replace("?", "")\
+    .replace(r"/", "_") for x in df.columns]
+df = df.drop(columns='marketcap')
+
+# write create table SQL statement - postgres takes different data types than pandas
+
+replacements = {
+    'object': 'varchar',
+    'float64': 'float',
+    'int64': 'int',
+    'datetime64': 'timestamp',
+    'timedelta64[ns]': 'varchar'
+}
+
+col_string = ", ".join("{} {}".format(n, d) for (n, d) in zip(df.columns, df.dtypes.replace(replacements)))
+
+# import data to db
+conn_string = "hidden"
+
+conn = psycopg2.connect(conn_string)
+cursor = conn.cursor()
+
+# drop tables with same name
+cursor.execute("drop table if exists sp500_companies")
+
+# create table
+cursor.execute("create table sp500 \
+(exchange varchar, symbol varchar, shortname varchar, longname varchar, sector varchar, industry varchar,\
+ currentprice float, ebitda float, revenuegrowth float, city varchar, state varchar, country varchar,\
+ fulltimeemployees float, longbusinesssummary varchar, weight float)")
+
+# save df to csv
+df.to_csv('sp500.csv', header=df.columns, index=False, encoding='utf-8')
+
+# open csv, save as object, upload to db
+my_file = open('sp500.csv')
+stringSQL = """
+COPY sp500 FROM STDIN WITH CSV HEADER DELIMITER AS ','
+"""
+
+cursor.copy_expert(sql=stringSQL, file=my_file)
+
+sql1 = "SELECT symbol, currentprice FROM sp500 WHERE symbol = 'AAPL';"
+cursor.execute(sql1)
+sp500 = cursor.fetchall()
+
+for x in sp500:
+    print("symbol = ", x[0])
+    print("currentprice = ", x[1])
+
+cursor.close()
+
+print('table sp500 import completed and closed')
+
+
