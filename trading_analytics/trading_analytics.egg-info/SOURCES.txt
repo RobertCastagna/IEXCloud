@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+trading_analytics/__init__.py
+trading_analytics/assets.py
+trading_analytics.egg-info/PKG-INFO
+trading_analytics.egg-info/SOURCES.txt
+trading_analytics.egg-info/dependency_links.txt
+trading_analytics.egg-info/requires.txt
+trading_analytics.egg-info/top_level.txt

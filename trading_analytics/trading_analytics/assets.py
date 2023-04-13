@@ -14,3 +14,6 @@ df = pd.read_csv("original.csv", header=0)
 
 print(df.head())
 
+base_url = ''
+
+quote = re.get(base_url +_)
