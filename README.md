@@ -15,3 +15,9 @@ In this project I have used the following resources:
 - **IEX Cloud: REST API** for batch API calls
 - **Redis** for testing analytics tools by caching real-time data
 - **psycopg2** database adapter to connect to PostgreSQL database hosted on AWS
+
+New Version:
+adding:
+- **Dagster** for workflow orchestration
+- **Snowflake** for continual data storage for analytics
+- **scikit-learn** ml models
