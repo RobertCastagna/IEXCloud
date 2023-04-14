@@ -8,7 +8,7 @@ from dagster import (
 )
 from dagster_snowflake_pandas import snowflake_pandas_io_manager
 from dagster_snowflake import snowflake_resource
-from . import api_assets
+from .assets import api_assets, core_assets
 
 iex_api_job = define_asset_job("iex_cloud_api", selection=AssetSelection.all())
 
@@ -17,8 +17,10 @@ hourly_api_schedule = ScheduleDefinition(
     job = define_asset_job(name = 'iex_cloud_api'), cron_schedule="0 * * * *"  # every hour
 )
 
+all_assets = [*core_assets, *api_assets]
+
 defs = Definitions(
-    assets= load_assets_from_package_module(api_assets, group_name='api_data'),
+    assets= all_assets,
     schedules=[hourly_api_schedule],
     resources={
         "snowflake_io_manager": snowflake_pandas_io_manager.configured(
