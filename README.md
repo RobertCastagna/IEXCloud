@@ -17,7 +17,7 @@ In this project I have used the following resources:
 - **psycopg2** database adapter to connect to PostgreSQL database hosted on AWS
 
 ## New Version:
-# refers to folder 'trading_analytics' only.  
+### refers to folder 'trading_analytics' only.  
 adding:
 - **Dagster** for workflow orchestration
 - **Snowflake** for continual data storage for analytics
@@ -27,4 +27,4 @@ removing:
 - **Redis**
 - **psycopg2**  
 
-# Tech Stack: Python, IEX Cloud API, Dagster, Snowflake, scikit-learn
+### Tech Stack: Python, IEX Cloud API, Dagster, Snowflake, scikit-learn
