@@ -7,7 +7,7 @@ This repository contains pieces of my project to utilize IEX Cloud API to build 
 - The goal was to display an equal weight s&p500 portfolio.
 
 ### Momentum Trading S&P500 Portfolio
-- The goal was to analyse the One-Year, Six-Month, Three-Month and One-Month percentile changes in price and output a weighted average score (hqm_score) to rank the top 10% of stocks in terms of momentum growth.
+- The goal was to analyze the One-Year, Six-Month, Three-Month and One-Month percentile changes in price and output a weighted average score (hqm_score) to rank the top 10% of stocks in terms of momentum growth.
 
 ## Tech Stack
 In this project I have used the following resources:
