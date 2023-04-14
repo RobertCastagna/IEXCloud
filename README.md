@@ -21,6 +21,7 @@ adding:
 - **Dagster** for workflow orchestration
 - **Snowflake** for continual data storage for analytics
 - **scikit-learn** ml models  
+
 removing:
 - **Redis**
 - **psycopg2**
