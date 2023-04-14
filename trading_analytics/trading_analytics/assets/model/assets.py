@@ -19,23 +19,22 @@ load_dotenv()
 def lin_regression_model(context: OpExecutionContext, equity_history_data):
     df = context.resources.snowflake_query.execute_query(
         (
-        f"select * from equity_history_data order by AVGTOTALVOLUME desc"
+        f"select PERATIO, AVGTOTALVOLUME from equity_history_data order by AVGTOTALVOLUME desc"
         ),
         fetch_results=True,
         use_pandas_result=True
     )
 
     sklearn.linear_model.LinearRegression(fit_intercept=True)
-    df1 = df[['PERATIO','AVGTOTALVOLUME']]
-    df2 = df1.dropna()
-    x = df2.PERATIO.values
+    df1 = df.dropna()
+    x = df1.PERATIO.values
     X = x.reshape(-1, 1)
 
     # Create an instance of a linear regression model and fit it to the data with the fit() function:
-    model = LinearRegression().fit(X, df2.AVGTOTALVOLUME) 
+    model = LinearRegression().fit(X, df1.AVGTOTALVOLUME) 
 
     # Obtain the coefficient of determination by calling the model with the score() function, then print the coefficient:
-    r_sq = model.score(X, df2.AVGTOTALVOLUME)
+    r_sq = model.score(X, df1.AVGTOTALVOLUME)
     
     #generate random PE RATIOS to feed to prediction model
     x_range = np.linspace(0, len(X), 100)
@@ -44,16 +43,16 @@ def lin_regression_model(context: OpExecutionContext, equity_history_data):
     logger = get_dagster_logger()
     logger.info('coefficient of determination: ' + str(r_sq) + ', intercept: ' + str(model.intercept_) + ', slope: ' + str(model.coef_))
 
-    return [df2, x_range, y_range]
+    return [df1, x_range, y_range]
 
 
 @asset(compute_kind='Plot', description='display a plot of trading volume over time')
 def plot_volume_by_ticker(context: OpExecutionContext, lin_regression_model):
 
-    df2, x_range, y_range = lin_regression_model
+    df1, x_range, y_range = lin_regression_model
 
     #generate line of best fit and prediction model
-    fig = px.scatter(df2, x = 'PERATIO', y = 'AVGTOTALVOLUME', opacity=0.65)
+    fig = px.scatter(df1, x = 'PERATIO', y = 'AVGTOTALVOLUME', opacity=0.65)
     fig.add_traces(go.Scatter(x=x_range, y=y_range, name = 'Regression Fit'))
     save_chart_path = file_relative_path(__file__, "volume_by_ticker.html")
     fig.write_html(save_chart_path, auto_open=True)
