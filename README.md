@@ -27,4 +27,4 @@ removing:
 - **Redis**
 - **psycopg2**  
 
-### Tech Stack: Python, IEX Cloud API, Dagster, Snowflake, scikit-learn
+### Tech Stack: Python, IEX Cloud API, Dagster, Snowflake, Scikit-Learn, Plotly
