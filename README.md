@@ -23,4 +23,4 @@ adding:
 - **scikit-learn** ml models  
 removing:
 - **Redis**
--- **psycopg2**
+- **psycopg2**
