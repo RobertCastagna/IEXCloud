@@ -16,11 +16,11 @@ In this project I have used the following resources:
 - **Redis** for testing analytics tools by caching real-time data
 - **psycopg2** database adapter to connect to PostgreSQL database hosted on AWS
 
-New Version: refers to folder 'trading_analytics' only.
+New Version: refers to folder 'trading_analytics' only.  
 adding:
 - **Dagster** for workflow orchestration
 - **Snowflake** for continual data storage for analytics
-- **scikit-learn** ml models
+- **scikit-learn** ml models  
 removing:
 - **Redis**
 -- **psycopg2**
