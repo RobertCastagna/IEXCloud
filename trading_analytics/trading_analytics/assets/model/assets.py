@@ -11,6 +11,7 @@ from datetime import datetime
 from dagster import Definitions, asset, get_dagster_logger, OpExecutionContext, MetadataValue, SourceAsset, Output, file_relative_path
 from sklearn.linear_model import LinearRegression
 import sklearn
+import boto
 
 load_dotenv()
 
@@ -43,7 +44,7 @@ def lin_regression_model(context: OpExecutionContext, equity_history_data):
     logger = get_dagster_logger()
     logger.info('coefficient of determination: ' + str(r_sq) + ', intercept: ' + str(model.intercept_) + ', slope: ' + str(model.coef_))
 
-    return [df1, x_range, y_range]
+    return df1, x_range, y_range
 
 
 @asset(compute_kind='Plot', description='display a plot of trading volume over time')
@@ -58,3 +59,10 @@ def plot_volume_by_ticker(context: OpExecutionContext, lin_regression_model):
     fig.write_html(save_chart_path, auto_open=True)
 
     context.add_output_metadata({"plot_url": MetadataValue.url("file://" + save_chart_path)})
+
+@asset(compute_kind='s3', description='read from s3')
+def s3_connection(lin_regression_model):
+    s3 = boto.connect_s3()
+    key = s3.get_bucket('ci-data-lake-dev').get_key('index.txt')
+    print(key, '<----------------------------------------')
+

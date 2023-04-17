@@ -1,1 +1,3 @@
 trading_analytics/.env
+trading_analytics/boto.cfg
+trading_analytics/trading_analytics/assets/model/volume_by_ticker.html
