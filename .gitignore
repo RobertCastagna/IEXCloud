@@ -1,4 +1,5 @@
 trading_analytics/.env
-trading_analytics/.boto
+trading_analytics/.aws/config
+trading_analytics/.aws/credentials
 trading_analytics/assets/model/volume_by_ticker.html
 
