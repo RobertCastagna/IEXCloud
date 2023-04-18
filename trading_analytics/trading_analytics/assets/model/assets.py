@@ -4,6 +4,7 @@ import json
 import csv
 import pandas as pd
 import numpy as np
+import boto3
 import plotly.express as px
 import plotly.graph_objects as go
 from dotenv import load_dotenv
@@ -58,3 +59,14 @@ def plot_volume_by_ticker(context: OpExecutionContext, lin_regression_model):
     fig.write_html(save_chart_path, auto_open=True)
 
     context.add_output_metadata({"plot_url": MetadataValue.url("file://" + save_chart_path)})
+
+
+@asset(compute_kind='s3', description='s3 read/write')
+def s3_connection(lin_regression_model):
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket('')
+
+    for obj in bucket.objects.all():
+        key = obj.key
+        body = obj.get()['Body'].read()
+        print(key, body, '<----------------------------------------')
