@@ -12,7 +12,6 @@ from datetime import datetime
 from dagster import Definitions, asset, get_dagster_logger, OpExecutionContext, MetadataValue, SourceAsset, Output, file_relative_path
 from sklearn.linear_model import LinearRegression
 import sklearn
-
 load_dotenv()
 
 
@@ -63,10 +62,13 @@ def plot_volume_by_ticker(context: OpExecutionContext, lin_regression_model):
 
 @asset(compute_kind='s3', description='s3 read/write')
 def s3_connection(lin_regression_model):
+
     s3 = boto3.resource('s3')
-    bucket = s3.Bucket('')
+    bucket = s3.Bucket('ci-data-lake-dev')
 
     for obj in bucket.objects.all():
         key = obj.key
         body = obj.get()['Body'].read()
-        print(key, body, '<----------------------------------------')
+        print(key, '<----------------------------------------')
+
+

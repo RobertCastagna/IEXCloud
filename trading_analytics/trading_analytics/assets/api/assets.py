@@ -70,7 +70,7 @@ def batch_api_quote_data(context: OpExecutionContext, get_equity_info):
     return df
 
 
-@asset(required_resource_keys={"snowflake_query"},io_manager_key="snowflake_io_manager", compute_kind='SQL', description='append new results')
+@asset(required_resource_keys={"snowflake_query"},io_manager_key="snowflake_io_manager", compute_kind='Snowflake', description='append new results')
 def equity_history_data(context: OpExecutionContext, batch_api_quote_data):
 
     top_stories_stored_query = context.resources.snowflake_query.execute_query(
